@@ -5,7 +5,9 @@
       <div class="app-content flex flex-column">
         <HomeView />
         <router-link to="/" />
-        <InvoiceModal v-if="showInvoiceModal" />
+        <transition name="invoice">
+          <InvoiceModal v-if="showInvoiceModal" />
+        </transition>
       </div>
     </div>
 
@@ -87,6 +89,18 @@ export default {
     margin-top: 16px;
   }
 }
+
+// Animated Invoice Modal
+.invoice-enter-active,
+.invoice-leave-active {
+  transition: 0.8s ease all;
+}
+
+.invoice-enter-from,
+.invoice-leave-to {
+  transform: translateX(-100%);
+}
+
 button,
 .button {
   cursor: pointer;

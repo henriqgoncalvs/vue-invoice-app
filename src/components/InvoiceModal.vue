@@ -144,7 +144,9 @@
 
         <div class="save flex">
           <div class="left">
-            <button @click="closeInvoice" class="red">Cancel</button>
+            <button type="button" @click="closeInvoice" class="red">
+              Cancel
+            </button>
           </div>
           <div class="right flex">
             <button @click="saveDraft" class="dark-purple">Save Draft</button>
