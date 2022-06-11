@@ -160,6 +160,7 @@
 
 <script>
 import { mapMutations } from "vuex";
+import { uid } from "uid";
 
 import FormInputText from "@/components/inputs/FormInputText.vue";
 import FormInputSelect from "@/components/inputs/FormInputSelect.vue";
@@ -214,8 +215,20 @@ export default {
     ...mapMutations(["TOGGLE_INVOICE"]),
     closeInvoice() {
       this.TOGGLE_INVOICE();
-
-      return;
+    },
+    addNewInvoiceItem() {
+      this.invoiceItemList.push({
+        id: uid(),
+        itemName: "",
+        qty: "",
+        price: 0,
+        total: 0,
+      });
+    },
+    deleteInvoiceItem(id) {
+      this.invoiceItemList = this.invoiceItemList.filter(
+        (item) => item.id !== id
+      );
     },
   },
   watch: {
@@ -325,6 +338,22 @@ export default {
               right: 0;
               width: 12px;
               height: 16px;
+            }
+
+            input {
+              width: 100%;
+              background-color: #1e2139;
+              color: #fff;
+              border-radius: 4px;
+              padding: 12px 4px;
+              border: none;
+              &:focus {
+                outline: none;
+              }
+              &:disabled {
+                background-color: #545774;
+                cursor: not-allowed;
+              }
             }
           }
         }
