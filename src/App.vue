@@ -5,7 +5,7 @@
       <div class="app-content flex flex-column">
         <HomeView />
         <router-link to="/" />
-        <InvoiceModal />
+        <InvoiceModal v-if="showInvoiceModal" />
       </div>
     </div>
 
@@ -17,6 +17,8 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 import TheNavigation from "@/components/TheNavigation";
 import InvoiceModal from "@/components/InvoiceModal";
 import HomeView from "@/views/HomeView";
@@ -43,6 +45,9 @@ export default {
 
       this.mobile = false;
     },
+  },
+  computed: {
+    ...mapState(["showInvoiceModal"]),
   },
 };
 </script>

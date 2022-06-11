@@ -157,6 +157,8 @@
 </template>
 
 <script>
+import { mapMutations } from "vuex";
+
 import FormInputText from "@/components/inputs/FormInputText.vue";
 import FormInputSelect from "@/components/inputs/FormInputSelect.vue";
 
@@ -199,6 +201,14 @@ export default {
       invoiceItemList: [],
       invoiceTotal: 0,
     };
+  },
+  methods: {
+    ...mapMutations(["TOGGLE_INVOICE"]),
+    closeInvoice() {
+      this.TOGGLE_INVOICE();
+
+      return;
+    },
   },
 };
 </script>
