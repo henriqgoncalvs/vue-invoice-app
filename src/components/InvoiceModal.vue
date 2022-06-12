@@ -150,7 +150,9 @@
           </div>
           <div class="right flex">
             <button @click="saveDraft" class="dark-purple">Save Draft</button>
-            <button @click="publishInvoice" class="purple">Create Draft</button>
+            <button @click="publishInvoice" class="purple">
+              Create Invoice
+            </button>
           </div>
         </div>
       </div>
@@ -161,6 +163,8 @@
 <script>
 import { mapMutations } from "vuex";
 import { uid } from "uid";
+import db from "@/firebase";
+import { collection, addDoc } from "firebase/firestore";
 
 import FormInputText from "@/components/inputs/FormInputText.vue";
 import FormInputSelect from "@/components/inputs/FormInputSelect.vue";
@@ -212,9 +216,9 @@ export default {
     );
   },
   methods: {
-    ...mapMutations(["TOGGLE_INVOICE"]),
+    ...mapMutations(["TOGGLE_INVOICE_MODAL"]),
     closeInvoice() {
-      this.TOGGLE_INVOICE();
+      this.TOGGLE_INVOICE_MODAL();
     },
     addNewInvoiceItem() {
       this.invoiceItemList.push({
@@ -229,6 +233,61 @@ export default {
       this.invoiceItemList = this.invoiceItemList.filter(
         (item) => item.id !== id
       );
+    },
+    calculateInvoiceTotal() {
+      this.invoiceTotal = 0;
+      this.invoiceItemList.forEach((invoiceItem) => {
+        this.invoiceTotal += invoiceItem.total;
+      });
+    },
+    publishInvoice() {
+      this.invoicePending = true;
+    },
+    saveDraft() {
+      this.invoiceDraft = true;
+    },
+    async uploadInvoice() {
+      if (!this.invoiceItemList.length) {
+        alert("Please ensure you filled out work items!");
+        return;
+      }
+
+      this.calculateInvoiceTotal();
+
+      try {
+        await addDoc(collection(db, "invoices"), {
+          invoiceId: uid(6),
+          billerStreetAddress: this.billerStreetAddress,
+          billerCity: this.billerCity,
+          billerZipCode: this.billerZipCode,
+          billerCountry: this.billerCountry,
+          clientName: this.clientName,
+          clientEmail: this.clientEmail,
+          clientStreetAddress: this.clientStreetAddress,
+          clientCity: this.clientCity,
+          clientZipCode: this.clientZipCode,
+          clientCountry: this.clientCountry,
+          invoiceDate: this.invoiceDate,
+          invoiceDateUnix: this.invoiceDateUnix,
+          paymentTerms: this.paymentTerms,
+          paymentDueDate: this.paymentDueDate,
+          paymentDueDateUnix: this.paymentDueDateUnix,
+          productDescription: this.productDescription,
+          invoiceItemList: this.invoiceItemList,
+          invoiceTotal: this.invoiceTotal,
+          invoicePending: this.invoicePending,
+          invoiceDraft: this.invoiceDraft,
+          invoicePaid: null,
+        });
+
+        this.TOGGLE_INVOICE_MODAL();
+      } catch (e) {
+        alert("There was an error when trying to add Invoice");
+        console.error("Error adding document: ", e);
+      }
+    },
+    submitForm() {
+      this.uploadInvoice();
     },
   },
   watch: {

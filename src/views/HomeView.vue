@@ -42,9 +42,9 @@ export default {
     };
   },
   methods: {
-    ...mapMutations(["TOGGLE_INVOICE"]),
+    ...mapMutations(["TOGGLE_INVOICE_MODAL"]),
     newInvoice() {
-      this.TOGGLE_INVOICE();
+      this.TOGGLE_INVOICE_MODAL();
       return;
     },
     toggleFilterMenu() {

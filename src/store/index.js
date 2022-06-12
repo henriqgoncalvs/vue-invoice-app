@@ -6,7 +6,7 @@ export default createStore({
   },
   getters: {},
   mutations: {
-    TOGGLE_INVOICE(state) {
+    TOGGLE_INVOICE_MODAL(state) {
       const nextShowInvoiceModal = !state.showInvoiceModal;
 
       state.showInvoiceModal = nextShowInvoiceModal;
