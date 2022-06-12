@@ -162,7 +162,7 @@
 </template>
 
 <script>
-import { mapMutations } from "vuex";
+import { mapMutations, mapActions } from "vuex";
 import { uid } from "uid";
 import db from "@/firebase";
 import { collection, addDoc } from "firebase/firestore";
@@ -219,6 +219,7 @@ export default {
   },
   methods: {
     ...mapMutations(["TOGGLE_INVOICE_MODAL", "TOGGLE_MODAL"]),
+    ...mapActions(["GET_INVOICES"]),
     checkClick(e) {
       if (e.target === this.$refs.invoiceWrap) {
         this.TOGGLE_MODAL();
@@ -289,6 +290,7 @@ export default {
         });
 
         this.TOGGLE_INVOICE_MODAL();
+        this.GET_INVOICES();
       } catch (e) {
         alert("There was an error when trying to add Invoice");
         console.error("Error adding document: ", e);
