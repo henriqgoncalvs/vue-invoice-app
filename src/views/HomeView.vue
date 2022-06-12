@@ -12,10 +12,10 @@
           <img src="@/assets/icon-arrow-down.svg" alt="" />
 
           <ul v-show="showFilterMenu" class="filter-menu">
-            <li>Draft</li>
-            <li>Pending</li>
-            <li>Paid</li>
-            <li>Clear filters</li>
+            <li @click="filteredInvoices">Draft</li>
+            <li @click="filteredInvoices">Pending</li>
+            <li @click="filteredInvoices">Paid</li>
+            <li @click="filteredInvoices">Clear filters</li>
           </ul>
         </div>
 
