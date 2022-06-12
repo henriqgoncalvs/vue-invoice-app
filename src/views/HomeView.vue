@@ -27,18 +27,36 @@
         </div>
       </div>
     </div>
+
+    <!-- Invoices -->
+    <div v-if="invoiceData.length > 0">
+      <InvoiceItem
+        v-for="(invoice, index) in filteredData"
+        :invoice="invoice"
+        :key="index"
+      />
+    </div>
+    <div v-else class="empty flex flex-column">
+      <img src="@/assets/illustration-empty.svg" alt="" />
+      <h3>There is nothing here</h3>
+      <p>
+        Create a new invoice by clicking the New Invoice button and get started
+      </p>
+    </div>
   </div>
 </template>
 
 <script>
-import { mapMutations } from "vuex";
+import { mapMutations, mapState } from "vuex";
+import InvoiceItem from "@/components/InvoiceItem.vue";
 
 export default {
   name: "HomeView",
-  components: {},
+  components: { InvoiceItem },
   data() {
     return {
       showFilterMenu: null,
+      filteredInvoice: null,
     };
   },
   methods: {
@@ -53,6 +71,31 @@ export default {
       this.showFilterMenu = nextShowFilterMenu;
 
       return;
+    },
+    filteredInvoices(e) {
+      if (e.target.innerText === "Clear Filter") {
+        this.filteredInvoice = null;
+        return;
+      }
+      this.filteredInvoice = e.target.innerText;
+    },
+  },
+  computed: {
+    ...mapState(["invoiceData"]),
+
+    filteredData() {
+      return this.invoiceData.filter((invoice) => {
+        if (this.filteredInvoice === "Draft") {
+          return invoice.invoiceDraft === true;
+        }
+        if (this.filteredInvoice === "Pending") {
+          return invoice.invoicePending === true;
+        }
+        if (this.filteredInvoice === "Paid") {
+          return invoice.invoicePaid === true;
+        }
+        return invoice;
+      });
     },
   },
 };
