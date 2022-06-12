@@ -3,11 +3,11 @@
     <div v-if="!mobile" class="app flex">
       <TheNavigation />
       <div class="app-content flex flex-column">
-        <HomeView />
-        <router-link to="/" />
+        <TheModal v-if="modalActive" />
         <transition name="invoice">
           <InvoiceModal v-if="showInvoiceModal" />
         </transition>
+        <router-view />
       </div>
     </div>
 
@@ -23,10 +23,10 @@ import { mapState } from "vuex";
 
 import TheNavigation from "@/components/TheNavigation";
 import InvoiceModal from "@/components/InvoiceModal";
-import HomeView from "@/views/HomeView";
+import TheModal from "@/components/TheModal";
 
 export default {
-  components: { TheNavigation, HomeView, InvoiceModal },
+  components: { TheNavigation, InvoiceModal, TheModal },
   data() {
     return {
       mobile: null,
@@ -49,7 +49,7 @@ export default {
     },
   },
   computed: {
-    ...mapState(["showInvoiceModal"]),
+    ...mapState(["showInvoiceModal", "modalActive"]),
   },
 };
 </script>

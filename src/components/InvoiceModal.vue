@@ -218,7 +218,12 @@ export default {
     );
   },
   methods: {
-    ...mapMutations(["TOGGLE_INVOICE_MODAL"]),
+    ...mapMutations(["TOGGLE_INVOICE_MODAL", "TOGGLE_MODAL"]),
+    checkClick(e) {
+      if (e.target === this.$refs.invoiceWrap) {
+        this.TOGGLE_MODAL();
+      }
+    },
     closeInvoice() {
       this.TOGGLE_INVOICE_MODAL();
     },
