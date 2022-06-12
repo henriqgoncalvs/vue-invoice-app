@@ -5,6 +5,7 @@
     class="invoice-wrap flex flex-column"
   >
     <form @submit.prevent="submitForm" class="invoice-content">
+      <TheLoading v-show="loading" />
       <h1>New Invoice</h1>
 
       <!-- Bill From -->
@@ -168,10 +169,11 @@ import { collection, addDoc } from "firebase/firestore";
 
 import FormInputText from "@/components/inputs/FormInputText.vue";
 import FormInputSelect from "@/components/inputs/FormInputSelect.vue";
+import TheLoading from "@/components/TheLoading.vue";
 
 export default {
   name: "InvoiceModal",
-  components: { FormInputText, FormInputSelect },
+  components: { FormInputText, FormInputSelect, TheLoading },
   data() {
     return {
       dateOptions: { year: "numeric", month: "short", day: "numeric" },
@@ -252,6 +254,7 @@ export default {
         return;
       }
 
+      this.loading = true;
       this.calculateInvoiceTotal();
 
       try {
@@ -285,6 +288,8 @@ export default {
         alert("There was an error when trying to add Invoice");
         console.error("Error adding document: ", e);
       }
+
+      this.loading = false;
     },
     submitForm() {
       this.uploadInvoice();
